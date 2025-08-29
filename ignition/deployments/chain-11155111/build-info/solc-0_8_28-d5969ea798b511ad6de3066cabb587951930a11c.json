@@ -1,0 +1,39 @@
+{
+  "_format": "hh3-sol-build-info-1",
+  "id": "solc-0_8_28-d5969ea798b511ad6de3066cabb587951930a11c",
+  "solcVersion": "0.8.28",
+  "solcLongVersion": "0.8.28+commit.7893614a",
+  "userSourceNameMap": {
+    "contracts/RedPacket.sol": "project/contracts/RedPacket.sol"
+  },
+  "input": {
+    "language": "Solidity",
+    "settings": {
+      "evmVersion": "cancun",
+      "optimizer": {
+        "enabled": true,
+        "runs": 200
+      },
+      "outputSelection": {
+        "*": {
+          "": [
+            "ast"
+          ],
+          "*": [
+            "abi",
+            "evm.bytecode",
+            "evm.deployedBytecode",
+            "evm.methodIdentifiers",
+            "metadata"
+          ]
+        }
+      },
+      "remappings": []
+    },
+    "sources": {
+      "project/contracts/RedPacket.sol": {
+        "content": "// SPDX-License-Identifier: MIT\npragma solidity ^0.8.28;\ncontract RedPacket {\n    uint256 public count;\n    address public owner;\n    uint256 public totalAmount;\n    mapping(address => bool) public hasGrap;\n    event Withdrawn(address indexed owner, uint256 amount);\n    event Grapped(address indexed user, uint256 amount);\n\n    constructor(uint256 _count) payable {\n        require(msg.value > 0, \"Value must be positive\");\n        count = _count;\n        owner = msg.sender;\n        totalAmount = msg.value;\n    }\n\n    function grap() public {\n        require(count > 0, \"No packets left\");\n        require(!hasGrap[msg.sender], \"Already claimed\");\n\n        uint256 amount;\n        if (count == 1) {\n            amount = totalAmount; // 最后一人获取剩余全部\n        } else {\n            amount = totalAmount / count; // 整数除法（截断）\n        }\n\n        // 更新状态\n        hasGrap[msg.sender] = true;\n        totalAmount -= amount;\n        count--;\n        payable(msg.sender).transfer(amount);\n        emit Grapped(msg.sender, amount);\n    }\n\n    function getBalance() public view returns (uint256) {\n        return address(this).balance;\n    }\n\n    // 提币\n    function withdraw() public payable {\n        require(msg.sender == owner, \"Not owner\");\n        uint256 amount = address(this).balance;\n        emit Withdrawn(msg.sender, amount);\n        payable(msg.sender).transfer(amount);\n    }\n}\n"
+      }
+    }
+  }
+}

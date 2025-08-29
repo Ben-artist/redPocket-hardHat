@@ -1,0 +1,30 @@
+{
+  "name": "hardhat",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "deploy": "npx hardhat ignition deploy ./ignition/modules/RedPacketModule.ts --network sepolia",
+    "verify": "npx hardhat verify --network sepolia 0x67Ef630540CE16053F01142A8154a0C0Cf7f0d7C 2"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "packageManager": "pnpm@10.15.0",
+  "devDependencies": {
+    "@nomicfoundation/hardhat-ignition": "^3.0.1",
+    "@nomicfoundation/hardhat-toolbox-viem": "^5.0.0",
+    "@types/node": "^22.18.0",
+    "forge-std": "github:foundry-rs/forge-std#v1.9.4",
+    "hardhat": "^3.0.3",
+    "typescript": "~5.8.3",
+    "viem": "^2.36.0"
+  },
+  "type": "module",
+  "dependencies": {
+    "@nomicfoundation/hardhat-verify": "^3.0.0",
+    "@nomiclabs/hardhat-ethers": "^2.2.3",
+    "ethers": "^6.15.0"
+  }
+}
